@@ -7,10 +7,19 @@ import android.os.Bundle;
 
 import android.os.Handler;
 import android.view.View;
-import java.util.Locale;
 
+import java.io.File;
+import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import android.widget.EditText;
 import android.widget.TextView;
 
+import org.w3c.dom.Document;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -31,7 +40,15 @@ public class MainActivity extends AppCompatActivity{
 
     private boolean wasRunning;
     MediaPlayer beep;
-
+    Timer time;
+    TimerTask interval = new TimerTask() {
+        @Override
+        public void run() {
+            beep.start();
+        }
+    };
+    int totalSecond = -1;
+    boolean beeping = false;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -39,6 +56,11 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         beep = MediaPlayer.create(this, R.raw.beep);
         setContentView(R.layout.activity_main);
+
+        time = new Timer();
+
+//        time.schedule(test, 0, 600);
+//        time.schedule(test, 0, 2000);
         if (savedInstanceState != null) {
 
             // Get the previous state of the stopwatch
@@ -87,6 +109,7 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onResume()
     {
+        time = new Timer();
         super.onResume();
         if (wasRunning) {
             running = true;
@@ -99,8 +122,26 @@ public class MainActivity extends AppCompatActivity{
     // when the Start button is clicked.
     public void onClickStart(View view)
     {
+        if(totalSecond < 0){
+            EditText mEdit   = (EditText)findViewById(R.id.editText1);
+            String t = mEdit.getText().toString();
+            int second = Integer.parseInt(t);
+
+            mEdit   = (EditText)findViewById(R.id.editText);
+            t = mEdit.getText().toString();
+            int minute = Integer.parseInt(t);
+
+            mEdit = (EditText)findViewById(R.id.editText2);
+            t = mEdit.getText().toString();
+            int hour = Integer.parseInt(t);
+
+            totalSecond = 0;
+            totalSecond += hour * 3600;
+            totalSecond += minute * 60;
+            totalSecond += second;
+        }
         running = true;
-        beep.start();
+//        beep.start();
     }
 
     // Stop the stopwatch running
@@ -109,6 +150,10 @@ public class MainActivity extends AppCompatActivity{
     // when the Stop button is clicked.
     public void onClickStop(View view)
     {
+//        time.schedule(interval, 0, 0);
+        time.cancel();
+        time.purge();
+        beeping = false;
         running = false;
     }
 
@@ -120,7 +165,10 @@ public class MainActivity extends AppCompatActivity{
     {
         running = false;
         seconds = 0;
+        totalSecond = -1;
+        beeping = false;
     }
+
 
     // Sets the NUmber of seconds on the timer.
     // The runTimer() method uses a Handler
@@ -128,7 +176,6 @@ public class MainActivity extends AppCompatActivity{
     // update the text view.
     private void runTimer()
     {
-
         // Get the text view.
         final TextView timeView
                 = (TextView)findViewById(
@@ -153,7 +200,9 @@ public class MainActivity extends AppCompatActivity{
                 int minutes = (seconds % 3600) / 60;
                 int secs = seconds % 60;
 
-                if(secs == 5){
+                if(!beeping  && secs >= totalSecond - 60 && totalSecond != -1){
+                    time.schedule(interval, 0, 2000);
+                    beeping = true;
                     beep.start();
                 }
                 // Format the seconds into hours, minutes,
@@ -173,7 +222,6 @@ public class MainActivity extends AppCompatActivity{
                     seconds++;
                     System.out.println("arbitrary text");
                 }
-
                 // Post the code again
                 // with a delay of 1 second.
                 handler.postDelayed(this, 1000);

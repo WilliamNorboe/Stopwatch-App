@@ -11,7 +11,73 @@
     android:padding="16dp"
     tools:context="org.geeksforgeeks.stopwatch.StopwatchActivity">
 
-<TextView
+    <EditText
+        android:id="@+id/editTextText"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Second" />
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="94dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView2"
+        android:layout_toRightOf="@+id/textView2"
+        android:background="#000000"
+        android:ems="10"
+        android:inputType="number"
+        android:text="10">
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/editTextText2"
+        android:layout_width="82dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Minute" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="96dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView2"
+        android:layout_toRightOf="@+id/textView2"
+        android:background="#000000"
+        android:ems="10"
+        android:inputType="number"
+        android:text="1">
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/editTextText3"
+        android:layout_width="96dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Hour" />
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="96dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView2"
+        android:layout_toRightOf="@+id/textView2"
+        android:background="#000000"
+        android:ems="10"
+        android:inputType="number"
+        android:text="0">
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
 
     android:id="@+id/time_view"
     android:layout_width="wrap_content"
@@ -37,14 +103,15 @@
 
     android:onClick="onClickStop"
     android:text="@string/stop" />
-<Button
 
-    android:id="@+id/reset_button"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
-    android:layout_marginTop="8dp"
+    <Button
 
-    android:onClick="onClickReset"
-    android:text="@string/reset" />
-    </LinearLayout>
+        android:id="@+id/reset_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
+
+        android:onClick="onClickReset"
+        android:text="@string/reset" />
+</LinearLayout>
